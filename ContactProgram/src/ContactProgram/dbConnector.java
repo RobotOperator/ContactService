@@ -35,7 +35,7 @@ public class dbConnector {
 	}
 	
 	public void insertContact(String id, String firstName, String lastName, String phoneNumber, String address) {
-		//prepare statement string 
+		//Prepare statement string 
 		String sql = "INSERT INTO contacts(id, first_name, last_name, phone_number, address) VALUES(?,?,?,?,?)";
 		
 		//Assign parameters to values for prepared statement
@@ -50,44 +50,73 @@ public class dbConnector {
 		}
 		catch (SQLException e) {
 			System.out.println(e.getMessage());
+			throw new IllegalStateException("--Failed to insert contact into database--");
 		}
 	}
 	
-	public static void deleteContact() {
-		//stub
+	//Remove contact from the database table by specified id
+	public void deleteContact(String id) {
+		// Prepare statement
+		String sql = "DELETE FROM contacts WHERE id = ?";
+		
+		//Assign parameter to value for prepared statement
+		try (PreparedStatement pstmt = this.conn.prepareStatement(sql)) {
+			pstmt.setString(1, id);
+			pstmt.executeUpdate(); //execute the DELETE
+			pstmt.close();
+		}
+		catch (SQLException e) {
+			System.out.println(e.getMessage());
+			throw new IllegalStateException("--Failed to delete contact from database--");
+		}
 	}
 	
-	public static void updateContact() {
-		//stub
+	//Method to update a contact within the database
+	public void updateContact(String id, String field, String value) {
+		//Prepare statement
+		String sql = "UPDATE contacts SET " + field
+				+ " = ? "
+				+ "WHERE id = ?";
+		
+		//Assign values to the prepared statement
+		try (PreparedStatement pstmt = this.conn.prepareStatement(sql) ) {
+			pstmt.setString(1, value);
+			pstmt.setString(2, id);
+			pstmt.executeUpdate(); //Execute the update query
+		}
+		catch (SQLException e) {
+			System.out.println(e.getMessage());
+			throw new IllegalStateException("--Failed to update contact in database--");
+		}
 	}
 	
 	//Method to load contacts from the database
-	public void retrieveContacts() {
-		//Create new ArrayList of contacts
-		//ArrayList<Contact> databaseContacts = new ArrayList<Contact>();
+	public void retrieveContacts(ArrayList<Contact> databaseContacts, ArrayList<String> dbIds) {
 		//Prepare SQL query
 		String sql = "SELECT * FROM contacts";
 		
-		
+		//Load contacts stored in the database as new contact objects after executing select query
 		try (Statement stmt = this.conn.createStatement();
 				ResultSet rs = stmt.executeQuery(sql)) {
 			//loop through the result set
 			while (rs.next()) {
 				Contact newone = new Contact(rs.getString("id"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone_number"), rs.getString("address"));
-				databaseContacts
+				dbIds.add(rs.getString("id"));
+				databaseContacts.add(newone);
 			}
+			rs.close();
+			stmt.close();
 		}
 		catch (SQLException e) {
 			System.out.println(e.getMessage());
 			throw new IllegalStateException("Contacts could not be loaded from database");
 		}
-		return new ArrayList<Contact>(); //default empty array list
 	}
 	
 	//Method to create the Contact table in the database
 	public void createContactTable() {
 		//pass the connection in 
-		Connection connected = this.conn;
+		//Connection connected = this.conn;
 		//create the contacts table
 		String sql = "CREATE TABLE IF NOT EXISTS contacts (\n"
 				+ "    id text PRIMARY KEY,\n"
@@ -98,14 +127,28 @@ public class dbConnector {
 				+ ");";
 		
 		//Try to execute the statement creating the table, handle error if it fails
-		try ( Statement stmt = connected.createStatement()) {
+		try ( Statement stmt = this.conn.createStatement()) {
 			stmt.execute(sql);
+			stmt.close();
 		}
 		catch ( SQLException e ) {
 			System.out.println(e.getMessage());
 			throw new IllegalStateException("--Failed to create Contact table--");
-		}
+		}	
+	}
+	
+	//Method to delete all contacts from the database
+	public void deleteAllContacts() {
+		String sql = "DELETE FROM contacts";
 		
+		try ( Statement stmt = this.conn.createStatement()) {
+			stmt.execute(sql);
+			stmt.close();
+		}
+		catch (SQLException e) {
+			System.out.println(e.getMessage());
+			throw new IllegalStateException("--Failed to delete contacts in database--");
+		}
 	}
 	
 

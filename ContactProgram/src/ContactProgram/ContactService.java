@@ -22,8 +22,11 @@ public class ContactService {
 		boolean fileExists = dbPath.exists();
 		//Create a new database connection
 		db = new dbConnector(dbDirectory, dbFile);
-		//If the file didn't exist then create the table to hold contacts
-		if (!fileExists) {
+		//If the file didn't exist then create the table to hold contacts else load contacts from the database
+		if (fileExists) {
+			db.retrieveContacts(ContactList, Ids);
+		}
+		else {
 			db.createContactTable();
 		}
 	}
@@ -46,6 +49,7 @@ public class ContactService {
 		if (Ids.contains(id)) {
 		ContactList.remove(Ids.indexOf(id));
 		Ids.remove(id);
+		this.db.deleteContact(id);
 		}
 		else {
 			throw new IllegalArgumentException("The id given does not exist as a contact.");
@@ -57,12 +61,16 @@ public class ContactService {
 		if (Ids.contains(id) && field != null) {
 			switch (field.toLowerCase()) {
 			    case "firstname": ContactList.get(Ids.indexOf(id)).setFirstName(value);
+			    this.db.updateContact(id, "first_name", value);
 			    break;
 			    case "lastname": ContactList.get(Ids.indexOf(id)).setLastName(value);
+			    this.db.updateContact(id, "last_name", value);
 			    break;
 			    case "phonenumber": ContactList.get(Ids.indexOf(id)).setNumber(value);
+			    this.db.updateContact(id, "phone_number", value);
 			    break;
 			    case "address": ContactList.get(Ids.indexOf(id)).setAddress(value);
+			    this.db.updateContact(id, "address", value);
 			    break;
 			    default: throw new IllegalArgumentException("The field specified is not recognized. Fields are: FirstName, LastName, PhoneNumber, Address.");
 			}
@@ -75,5 +83,12 @@ public class ContactService {
 	//Method to retrieve contacts stored in the service: TODO - search by id or name for a contact
 	public ArrayList<Contact> getContacts() {
 		return ContactList;
+	}
+	
+	//Method to delete all contacts stored in the list and database
+	public void deleteContacts() {
+		this.db.deleteAllContacts();
+		Ids.clear();
+		ContactList.clear();
 	}
 }
