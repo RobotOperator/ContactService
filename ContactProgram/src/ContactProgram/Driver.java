@@ -23,11 +23,13 @@ public class Driver {
 			System.out.println("2 - Add Contact");
 			System.out.println("3 - Update Contact");
 			System.out.println("4 - Delete Contact");
+			System.out.println("5 - Search for Contact");
+			System.out.println("6 - Delete All Contacts");
 			System.out.println("9 - Exit Service");
 			System.out.print("Choice >");
 			try {
 			    selection = sc.nextInt(); //ensure valid integer is provided
-			    if (selection <= 0 || selection > 4 && selection != 9) {
+			    if (selection <= 0 || selection > 6 && selection != 9) {
 			    	throw new InputMismatchException("Out of range");
 			    }
 			}
@@ -51,6 +53,33 @@ public class Driver {
 				  break;
 			  case 4:
 				  deleteContact(MainService, sc);
+				  break;
+			  case 5:
+				  searchForContact(MainService, sc);
+				  break;
+			  case 6:
+				  System.out.println("!!WARNING!! This will delete all stored contacts.");
+				  System.out.println("Are you sure you wish to proceed? Enter (y) for yes and (n) for no");
+				  System.out.print(">");
+				  String confirm = sc.next();
+				  if (confirm.toLowerCase().equals("y")) {
+					  try {
+						  MainService.deleteContacts();
+						  System.out.println("Contacts deleted.");
+					  }
+					  //Failed to delete database, inform the user to delete the database file
+					  catch (Exception e) {
+						  System.out.println(e.getMessage());
+						  System.out.println("Deletion has failed, manually delete the database file and restart the service");
+						  System.out.print("Press enter to exit the service.");
+						  sc.next();
+						  selection = 9;
+				      }
+					  
+				  }
+				  else {
+					  System.out.println("Deletion aborted.");
+				  }
 				  break;
 			  } 
 			}
@@ -148,6 +177,11 @@ public class Driver {
 		catch (IllegalArgumentException e) {
 			System.out.println(e);
 		}
+	}
+	
+	//Function to search for a specific contact
+	private static void searchForContact(ContactService searchService, Scanner in) {
+		//stub
 	}
 
 }

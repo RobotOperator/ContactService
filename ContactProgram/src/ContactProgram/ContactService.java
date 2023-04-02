@@ -80,7 +80,7 @@ public class ContactService {
 		}
 	}
 	
-	//Method to retrieve contacts stored in the service: TODO - search by id or name for a contact
+	//Method to retrieve contacts stored in the service
 	public ArrayList<Contact> getContacts() {
 		return ContactList;
 	}
