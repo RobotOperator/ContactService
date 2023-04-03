@@ -11,9 +11,11 @@ public class ContactService {
 	private dbConnector db;
 	private String dbFile;
 	private String dbDirectory;
+	private String databaseKey;
 	
-	//Default constructor with blank array lists.
-	public ContactService() {
+	//Default constructor with blank array lists. Requires a key to access encrypted content in the database.
+	public ContactService(String dbKey) {
+		this.databaseKey = dbKey;
 		//Statically configured path to the database file
 		dbDirectory = "";
 		dbFile = "contact.db";
@@ -27,7 +29,7 @@ public class ContactService {
 		//If the file didn't exist then create the table to hold contacts else load contacts from the database
 		if (fileExists) {
 			try {
-			    db.retrieveContacts(ContactList, Ids);
+			    db.retrieveContacts(ContactList, Ids, dbKey);
 			    System.out.println("++Loaded " + Ids.size() + " contacts from the database++");
 			}
 			catch (IllegalStateException e) {
@@ -50,7 +52,7 @@ public class ContactService {
 		Contact newone = new Contact(id, firstName, lastName, phoneNumber, address);
 		Ids.add(id);
 		ContactList.add(newone);
-		this.db.insertContact(id, firstName, lastName, phoneNumber, address);
+		this.db.insertContact(id, firstName, lastName, phoneNumber, address, this.databaseKey);
 		}
 	}
 	
@@ -71,16 +73,16 @@ public class ContactService {
 		if (Ids.contains(id) && field != null) {
 			switch (field.toLowerCase()) {
 			    case "firstname": ContactList.get(Ids.indexOf(id)).setFirstName(value);
-			    this.db.updateContact(id, "first_name", value);
+			    this.db.updateContact(id, "first_name", value, this.databaseKey);
 			    break;
 			    case "lastname": ContactList.get(Ids.indexOf(id)).setLastName(value);
-			    this.db.updateContact(id, "last_name", value);
+			    this.db.updateContact(id, "last_name", value, this.databaseKey);
 			    break;
 			    case "phonenumber": ContactList.get(Ids.indexOf(id)).setNumber(value);
-			    this.db.updateContact(id, "phone_number", value);
+			    this.db.updateContact(id, "phone_number", value, this.databaseKey);
 			    break;
 			    case "address": ContactList.get(Ids.indexOf(id)).setAddress(value);
-			    this.db.updateContact(id, "address", value);
+			    this.db.updateContact(id, "address", value, this.databaseKey);
 			    break;
 			    default: throw new IllegalArgumentException("The field specified is not recognized. Fields are: FirstName, LastName, PhoneNumber, Address.");
 			}

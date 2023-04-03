@@ -34,17 +34,17 @@ public class dbConnector {
 		}
 	}
 	
-	public void insertContact(String id, String firstName, String lastName, String phoneNumber, String address) {
+	public void insertContact(String id, String firstName, String lastName, String phoneNumber, String address, String key) {
 		//Prepare statement string 
 		String sql = "INSERT INTO contacts(id, first_name, last_name, phone_number, address) VALUES(?,?,?,?,?)";
 		
 		//Assign parameters to values for prepared statement
 		try(PreparedStatement pstmt = this.conn.prepareStatement(sql)) {
 			pstmt.setString(1, id);
-			pstmt.setString(2, firstName);
-			pstmt.setString(3, lastName);
-			pstmt.setString(4, phoneNumber);
-			pstmt.setString(5, address);
+			pstmt.setString(2, dataEncrypt.xorEncrypt(firstName, key));
+			pstmt.setString(3, dataEncrypt.xorEncrypt(lastName, key));
+			pstmt.setString(4, dataEncrypt.xorEncrypt(phoneNumber,key));
+			pstmt.setString(5, dataEncrypt.xorEncrypt(address, key));
 			pstmt.executeUpdate(); //execute the insert statement
 			pstmt.close(); //close and release resources to be used in subsequent queries
 		}
@@ -72,7 +72,7 @@ public class dbConnector {
 	}
 	
 	//Method to update a contact within the database
-	public void updateContact(String id, String field, String value) {
+	public void updateContact(String id, String field, String value, String key) {
 		//Prepare statement
 		String sql = "UPDATE contacts SET " + field
 				+ " = ? "
@@ -80,7 +80,7 @@ public class dbConnector {
 		
 		//Assign values to the prepared statement
 		try (PreparedStatement pstmt = this.conn.prepareStatement(sql) ) {
-			pstmt.setString(1, value);
+			pstmt.setString(1, dataEncrypt.xorEncrypt(value, key));
 			pstmt.setString(2, id);
 			pstmt.executeUpdate(); //Execute the update query
 		}
@@ -91,7 +91,7 @@ public class dbConnector {
 	}
 	
 	//Method to load contacts from the database
-	public void retrieveContacts(ArrayList<Contact> databaseContacts, ArrayList<String> dbIds) {
+	public void retrieveContacts(ArrayList<Contact> databaseContacts, ArrayList<String> dbIds, String key) {
 		//Prepare SQL query
 		String sql = "SELECT * FROM contacts";
 		
@@ -100,7 +100,7 @@ public class dbConnector {
 				ResultSet rs = stmt.executeQuery(sql)) {
 			//loop through the result set
 			while (rs.next()) {
-				Contact newone = new Contact(rs.getString("id"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone_number"), rs.getString("address"));
+				Contact newone = new Contact(rs.getString("id"), dataEncrypt.xorEncrypt(rs.getString("first_name"), key), dataEncrypt.xorEncrypt(rs.getString("last_name"), key), dataEncrypt.xorEncrypt(rs.getString("phone_number"), key), dataEncrypt.xorEncrypt(rs.getString("address"), key));
 				dbIds.add(rs.getString("id"));
 				databaseContacts.add(newone);
 			}

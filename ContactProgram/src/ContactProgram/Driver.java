@@ -10,16 +10,41 @@ import java.util.*;
 public class Driver {
 
 	public static void main(String[] args) {
-		// Create the ContactService instance to hold contacts
-		ContactService MainService = new ContactService();
-		
+
 		//Create input scanner
 		Scanner sc = new Scanner(System.in);
 		sc.useDelimiter("\r\n");
 		
-		// User selection integer value, default 0 to start loop
+		//User supplies encryption key
+		System.out.println("Enter database key, or new key if starting with a blank database. (key must be 16 characters or greater)");
+		System.out.print(">");
+		String key =sc.next();
+		
+		while (key.length() < 16) {
+			System.out.println("Enter a longer key.");
+			System.out.print(">");
+			key = sc.next();
+		}
+		System.out.println("+Ensure you save this key to be able to decrypt the database contacts in the future.+");
+		System.out.println();
+		
+		// User selection integer value, default 0 to start input loop
 		int selection = 0;
 		
+		//Variable to contain instance of ContactService
+		ContactService MainService = null;
+				
+		// Create the ContactService instance to hold contacts
+		try {
+			 MainService = new ContactService(key);
+		}
+		catch (IllegalArgumentException e) {
+			System.out.println("Invalid key supplied and the database contacts could not be decrypted.");
+			sc.close();
+			System.out.println("Exit.");
+			System.exit(0);//service will exit and not proceed.
+		}
+	
 		// User interface printed selections
 		while (selection != 9) {
 			//Present menu of options
@@ -118,6 +143,7 @@ public class Driver {
 		String newAddress = in.next() + in.nextLine(); //Account for spaces in address by capturing first element in input and then scanning to next line
 		try {
 		    addTo.addContact(newId, newFName, newLName, newPhone, newAddress);
+		    System.out.println("\n++Success++\n");
 		}
 		catch (IllegalArgumentException e) {
 			System.out.println(e);
