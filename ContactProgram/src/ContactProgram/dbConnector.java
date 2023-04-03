@@ -115,8 +115,6 @@ public class dbConnector {
 	
 	//Method to create the Contact table in the database
 	public void createContactTable() {
-		//pass the connection in 
-		//Connection connected = this.conn;
 		//create the contacts table
 		String sql = "CREATE TABLE IF NOT EXISTS contacts (\n"
 				+ "    id text PRIMARY KEY,\n"
@@ -133,7 +131,7 @@ public class dbConnector {
 		}
 		catch ( SQLException e ) {
 			System.out.println(e.getMessage());
-			throw new IllegalStateException("--Failed to create Contact table--");
+			throw new IllegalStateException("--Failed to create Contact table in the database--");
 		}	
 	}
 	
@@ -147,9 +145,17 @@ public class dbConnector {
 		}
 		catch (SQLException e) {
 			System.out.println(e.getMessage());
-			throw new IllegalStateException("--Failed to delete contacts in database--");
+			throw new IllegalStateException("--Failed to delete contacts in the database--");
 		}
 	}
 	
-
+	//Method to close connection to database
+	public void closeConnection() {
+		try {
+			this.conn.close();
+		}
+		catch (SQLException e) {
+			throw new IllegalStateException("--Database connection could not be closed as needed--");
+		}
+	}
 }

@@ -1,6 +1,12 @@
 package ContactProgram;
 import java.util.*;
 
+/**
+ * 
+ * @author robot
+ *
+ */
+
 public class Driver {
 
 	public static void main(String[] args) {
@@ -16,7 +22,8 @@ public class Driver {
 		
 		// User interface printed selections
 		while (selection != 9) {
-			//TODO: SQLite check for database to load or print message if no database found and create one.
+			//Present menu of options
+			System.out.println();
 			System.out.println("Welcome to the Contact Service!");
 			System.out.println("Please make your selection from the below options.");
 			System.out.println("1 - View stored contacts");
@@ -58,35 +65,14 @@ public class Driver {
 				  searchForContact(MainService, sc);
 				  break;
 			  case 6:
-				  System.out.println("!!WARNING!! This will delete all stored contacts.");
-				  System.out.println("Are you sure you wish to proceed? Enter (y) for yes and (n) for no");
-				  System.out.print(">");
-				  String confirm = sc.next();
-				  if (confirm.toLowerCase().equals("y")) {
-					  try {
-						  MainService.deleteContacts();
-						  System.out.println("Contacts deleted.");
-					  }
-					  //Failed to delete database, inform the user to delete the database file
-					  catch (Exception e) {
-						  System.out.println(e.getMessage());
-						  System.out.println("Deletion has failed, manually delete the database file and restart the service");
-						  System.out.print("Press enter to exit the service.");
-						  sc.next();
-						  selection = 9;
-				      }
-					  
-				  }
-				  else {
-					  System.out.println("Deletion aborted.");
-				  }
+				  deleteAllContacts(MainService, sc);
 				  break;
 			  } 
 			}
 			// handle any non-specific exceptions
 			catch (Exception e) {
 				System.out.println(e);
-				sc.nextLine();
+				selection = 9;
 			}		
 		}
 		//close our scanner to release the resource 
@@ -159,12 +145,20 @@ public class Driver {
 	
 	//Function to update contact by Id
 	private static void updateContact(ContactService updateOne, Scanner in) {
+		//Capture update options
 		System.out.print("Enter Id of contact to update > ");
 		String targetId = in.next();
+		
+		//Print out list of fields that can be updated
+		System.out.println("Field Selection: \n\tFirstName \n\tLastName \n\tPhoneNumber \n\tAddress");
 		System.out.print("Enter the field to be updated > ");
 		String targetField = in.next();
+		
+		//Accept new value
 		System.out.print("Enter new value > ");
 		String newValue;
+		
+		//Capture input for addresses that contain spaces
 		if (targetField.toLowerCase().equals("address")) {
 			newValue = in.next() + in.nextLine();
 		}
@@ -172,7 +166,8 @@ public class Driver {
 			newValue = in.next();
 		}
 		try {
-		updateOne.updateContact(targetId, targetField.toLowerCase(), newValue); //cast target field to lower to make it easier for users to update without knowing exact capitalization
+		    updateOne.updateContact(targetId, targetField.toLowerCase(), newValue); //cast target field to lower to make it easier for users to update without knowing exact capitalization
+		    System.out.println("\n++Updated++\n");
 		}
 		catch (IllegalArgumentException e) {
 			System.out.println(e);
@@ -181,7 +176,50 @@ public class Driver {
 	
 	//Function to search for a specific contact
 	private static void searchForContact(ContactService searchService, Scanner in) {
-		//stub
+		//Retrieve ID
+		System.out.print("Enter Id of contact to find > ");
+		String targetId = in.next();
+		//Retrieve Contact from service
+		try {
+			Contact targetContact = searchService.findContact(targetId);
+			System.out.println();
+		    System.out.println("Contact Id: " + targetContact.getid());
+		    System.out.println("FirstName : " + targetContact.getFirstName());
+		    System.out.println("LastName : " + targetContact.getLastName());
+		    System.out.println("Phone : " + targetContact.getNumber());
+		    System.out.println("Address : " + targetContact.getAddress());
+		    System.out.println();
+		}
+		//If illegal argument is thrown print out the message
+		catch (IllegalArgumentException e) {
+			System.out.println();
+			System.out.println(e.getMessage());
+			System.out.println();
+		}
+		
+	}
+	
+	//Function to delete all contacts in database and memory
+	private static void deleteAllContacts(ContactService deleteService, Scanner in) {
+		 System.out.println("!!WARNING!! This will delete all stored contacts.");
+		 System.out.println("Are you sure you wish to proceed? Enter (y) for yes and (n) for no");
+		 System.out.print(">");
+		 String confirm = in.next();
+		 if (confirm.toLowerCase().equals("y")) {
+		  try {
+			  deleteService.deleteContacts();
+			  System.out.println("Contacts deleted.");
+		  }
+		  //Failed to delete database, inform the user to delete the database file
+		  catch (Exception e) {
+			  System.out.println(e.getMessage());
+			  //Throw error that will cause the service to exit, database will be rebuilt on restart
+			  throw new IllegalStateException("--Database could not be deleted please restart the service--");
+		  }			  
+		}
+		else {
+			  System.out.println("Deletion aborted.");
+		}
 	}
 
 }

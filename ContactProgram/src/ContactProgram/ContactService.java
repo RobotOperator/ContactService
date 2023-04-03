@@ -9,12 +9,14 @@ public class ContactService {
 	private ArrayList<Contact> ContactList;
 	private ArrayList<String> Ids;
 	private dbConnector db;
+	private String dbFile;
+	private String dbDirectory;
 	
 	//Default constructor with blank array lists.
 	public ContactService() {
 		//Statically configured path to the database file
-		String dbDirectory = "";
-		String dbFile = "contact.db";
+		dbDirectory = "";
+		dbFile = "contact.db";
 		File dbPath = new File(dbDirectory + dbFile);
 		ContactList = new ArrayList<Contact>();
 		Ids = new ArrayList<String>();
@@ -24,7 +26,15 @@ public class ContactService {
 		db = new dbConnector(dbDirectory, dbFile);
 		//If the file didn't exist then create the table to hold contacts else load contacts from the database
 		if (fileExists) {
-			db.retrieveContacts(ContactList, Ids);
+			try {
+			    db.retrieveContacts(ContactList, Ids);
+			    System.out.println("++Loaded " + Ids.size() + " contacts from the database++");
+			}
+			catch (IllegalStateException e) {
+				System.out.println();
+				System.out.println(e.getMessage());
+				System.out.println("New contacts can be added. Existing contacts will not show in the service.");
+			}
 		}
 		else {
 			db.createContactTable();
@@ -85,10 +95,33 @@ public class ContactService {
 		return ContactList;
 	}
 	
+	//Method to retrieve an instance of a single Contact
+	public Contact findContact(String id) {
+		int index = Ids.indexOf(id);
+		//If index is of id is not found
+		if (index < 0 ) {
+			throw new IllegalArgumentException("X--Contact not found--X");
+		}
+		else {
+			return ContactList.get(Ids.indexOf(id));
+		}
+	}
+	
 	//Method to delete all contacts stored in the list and database
 	public void deleteContacts() {
-		this.db.deleteAllContacts();
-		Ids.clear();
-		ContactList.clear();
+		try {
+		    this.db.deleteAllContacts();
+			Ids.clear();
+			ContactList.clear();
+		}
+		//If deleting contacts fails via SQL query, delete the database file and recreate it with the contacts table
+		catch (IllegalStateException e) {
+			this.db.closeConnection();
+			this.db = null;
+			File deleteObj = new File(dbDirectory + dbFile);
+			deleteObj.delete();
+			this.db = new dbConnector(dbDirectory, dbFile);
+			this.db.createContactTable();
+		}
 	}
 }
