@@ -3,6 +3,15 @@ package ContactProgram;
 import java.io.File;
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author robot
+ * The Contact Service class hosts all instances of contacts
+ * and performs CRUD operations for interacting with contacts.
+ * Contacts are stored in both a local ArrayList for quick retrieval and 
+ * a local SQLite database for persistent storage.
+ */
+
 public class ContactService {
 	
 	//Create new array lists to hold the contacts created and unique ID fields.

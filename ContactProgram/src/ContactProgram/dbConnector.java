@@ -9,9 +9,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 /**
- * 
  * @author robot
- *
+ * This class exposes methods to permit SQLite database interactions
+ * using prepared statements. 
+ * The connections established to perform queries persist while the 
+ * instance of the class exists
  */
 
 public class dbConnector {

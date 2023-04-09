@@ -1,5 +1,12 @@
 package ContactProgram;
 
+/**
+ * 
+ * @author robot
+ * The data encrypt class performs static XOR encryption of supplied strings
+ * using the key supplied. 
+ */
+
 public class dataEncrypt {
 	
 	public static String xorEncrypt(String inputString, String xorKey) {

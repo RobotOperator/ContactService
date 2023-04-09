@@ -5,6 +5,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ContactProgram.ContactService;
 
+/**
+ * 
+ * @author robot
+ * The Contact Service Test evaluates CRUD actions for 
+ * creating, reading, updating, and deleting contacts.
+ * The testing uses both positive and negative testing.
+ *
+ */
+
 class ContactServiceTest {
 
 	//Testing contact service to add new contact classes and errors when a duplicate ID is submitted as well as bad arguments.

@@ -9,6 +9,13 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+/**
+ * @author robot
+ * This test evaluates all required database connection activities like
+ * deleting contact entries. The testing performs both positive and negative
+ * testing checking for expected exceptions to be thrown.
+ */
+
 class dbConnectorTest {
 	
 	//Internal function to establish a new database for testing

@@ -2,9 +2,10 @@ package ContactProgram;
 import java.util.*;
 
 /**
- * 
  * @author robot
- *
+ * Main Driver method for the Contact Service application.
+ * This class provides the command-line user interface for interacting
+ * with the application. 
  */
 
 public class Driver {

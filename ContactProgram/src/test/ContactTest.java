@@ -6,6 +6,15 @@ import org.junit.jupiter.api.Assertions;
 
 import ContactProgram.Contact;
 
+/**
+ * 
+ * @author robot
+ * The contact test class both positively and negatively tests
+ * assigning the different attributes of the contact class using 
+ * both valid and invalid data. The tests validate that the correct
+ * errors are thrown when incorrect data is supplied.
+ *
+ */
 class ContactTest {
 
 	//Test the constructor of the contact class for correct input to return correct values.

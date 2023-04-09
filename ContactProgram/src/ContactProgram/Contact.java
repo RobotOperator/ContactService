@@ -1,5 +1,13 @@
 package ContactProgram;
 
+/**
+ * 
+ * @author robot
+ * The contact class performs input validation of supplied 
+ * data attributes and stores individual contact information.
+ * The Contact class primarily implements get and set methods for the 
+ * attributes set for the instance.
+ */
 public class Contact {
 
 	private final String ID; //final to make ID attribute immutable while instance exists.
