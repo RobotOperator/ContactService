@@ -27,49 +27,18 @@ After supplying the database key upon launching the Contact Program JAR file, th
   ### Testing
   Testing has been performed using Junit5 in Eclipse. The unit tests included with the project can be run to verify existing functionality for each underlying unique class used within Contact Program. When running the unit tests for this project, it is important to ensure the JAR is executed in a directory that does not already contain a copy of the contacts.db database file otherwise testing may unexpectedly fail or overwrite existing data. Testing has been performed using both positive and negative testing conditions to validate data is supplied in expected and correct formats to the classes.
   
-  ### Screenshots
-  ##### Importing the Austin Animal Center Outcomes data CSV using the MongoDB import tool.
-  <img src="/ReadMeImages/Picture1.png" width=70% height=70%>
+  ### Screenshots  
+  ##### Launching the Contact Program application and entering contact information.
+  <img src="/img/SQLiteApplicationRunning.PNG" width=65% height=65%>
   
-  ##### Authenticating as an administrator account and “aacuser” user account
-  <img src="/ReadMeImages/Picture2.png" width=70% height=70%>
-  <img src="/ReadMeImages/Picture3.png" width=70% height=70%>
+  ##### Searching for stored contact information
+  <img src="/img/SQLitesearch.PNG" width=65% height=65%>
   
-  ##### Starting MongoDB with user authentication and loaded data
-  <img src="/ReadMeImages/Picture4.png" width=70% height=70%>
-  
-  ##### Dashboard login page
-  <img src="/ReadMeImages/Picture5.png" width=65% height=65%>
-  
-  ##### Accessing the dashboard after login
-  <img src="/ReadMeImages/Picture6.png" width=65% height=65%>
-  
-  ##### Opening the Grazioso Salvare logo html anchor in a new tab
-  <img src="/ReadMeImages/Picture7.png" width=65% height=65%>
-  
-  ##### New tab to www.snhu.edu opened
-  <img src="/ReadMeImages/Picture8.png" width=65% height=65%>
-  
-  ##### View of the data table graph and map widgets
-  <img src="/ReadMeImages/Picture9.png" width=65% height=65%>
-  
-  ##### Water Rescue Filter Applied
-  <img src="/ReadMeImages/Picture10.png" width=65% height=65%>
-  
-  ##### Updated widgets for filter application
-  <img src="/ReadMeImages/Picture11.png" width=65% height=65%>
-  
-  ##### Disaster Rescue Filter Applied
-  <img src="/ReadMeImages/Picture12.png" width=65% height=65%>
-  
-  ##### Reset Filters
-  <img src="/ReadMeImages/Picture13.png" width=65% height=65%>
-  
-  ##### Filter data viewed in the table using search
-  <img src="/ReadMeImages/Picture14.png" width=65% height=65%>
+  ##### Deleting stored contacts and exiting the service
+  <img src="/img/SQLiteExitService.PNG" width=65% height=65%>
   
   ##### Running the included Junit5 tests in Eclipse
-  <img src="/img/Junit.png" width=65% height=65%>
+  <img src="/img/Junit.png" width=50% height=50%>
   
   ##### XOR encrypted data when opening the local database offline
   <img src="/img/EncryptedDatainSQLIte.PNG" width=65% height=65%>
