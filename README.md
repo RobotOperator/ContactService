@@ -68,11 +68,12 @@ After supplying the database key upon launching the Contact Program JAR file, th
   ##### Filter data viewed in the table using search
   <img src="/ReadMeImages/Picture14.png" width=65% height=65%>
   
-  ##### Reset by clearing search string
-  <img src="/ReadMeImages/Picture15.png" width=65% height=65%>
+  ##### Running the included Junit5 tests in Eclipse
+  <img src="/img/Junit.png" width=65% height=65%>
   
-  ##### Sort by Column
-  <img src="/ReadMeImages/Picture16.png" width=65% height=65%>
+  ##### XOR encrypted data when opening the local database offline
+  <img src="/img/EncryptedDatainSQLIte.PNG" width=65% height=65%>
+  
 
 ## Additional Resources
 This project would not be possible without the helpful insights provided at the following links and project documentation made available for the technologies employed like Oracle’s Java, SQLite, and the java SQLite driver created by Xerial. I encourage everyone to review these items to get a better understanding of the inner workings of this project.
