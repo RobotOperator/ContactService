@@ -1,7 +1,7 @@
-# ContactService (Enhanced)
+# Contact Service Program (Enhanced)
 My enhancements performed on the Contact Service for the second artifact of my CS499 capstone at Southern New Hampshire University.
 
-## About the Grazioso Salvare Dashboard
+## About the Contact Service Program
 This program is a Java command line application that facilitates creating, reading from, updating, searching for, and deleting contact information that is stored in a local SQLite database. All locally stored information is XOR encrypted to protect the user information for each contact created. All data supplied for contact information is validated by the underlying contact service.
 
 ## Motivation
