@@ -41,7 +41,7 @@ After supplying the database key upon launching the Contact Program JAR file, th
   <img src="/img/Junit.png" width=50% height=50%>
   
   ##### XOR encrypted data when opening the local database offline
-  <img src="/img/EncryptedDatainSQLIte.PNG" width=65% height=65%>
+  <img src="/img/EncryptedDB.PNG" width=65% height=65%>
   
 
 ## Additional Resources
